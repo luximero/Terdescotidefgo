@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru" id="html-root">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="theme-color" content="#0d0d1a"/>
+  <title>STACK</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- ████ MENU ████ -->
+  <div class="screen active" id="screen-menu">
+    <div class="menu-wrap">
+
+      <!-- Language switcher -->
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="lang-ru" onclick="setLang('ru')">RU</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" id="lang-en" onclick="setLang('en')">EN</button>
+      </div>
+
+      <!-- Animated preview tower -->
+      <div class="preview-tower">
+        <div class="pt-block" style="width:100px;background:#6b5400"></div>
+        <div class="pt-block" style="width:116px;background:#8a6e00"></div>
+        <div class="pt-block" style="width:130px;background:#b09000"></div>
+        <div class="pt-block" style="width:144px;background:#d4b000"></div>
+        <div class="pt-block pt-moving" style="width:158px;background:#f5c518"></div>
+      </div>
+
+      <!-- Logo -->
+      <div class="logo-block">
+        <h1 class="logo-title">TRIMNO</h1>
+        <p class="logo-sub" data-i18n="subtitle">Укладывай блоки идеально</p>
+      </div>
+
+      <!-- Records -->
+      <div class="records-panel">
+        <div class="rec-cell">
+          <span class="rec-lbl" data-i18n="best"> Рекорд</span>
+          <span class="rec-val gold" id="menu-best">0</span>
+        </div>
+        <div class="rec-divider"></div>
+        <div class="rec-cell">
+          <span class="rec-lbl" data-i18n="last">Прошлый</span>
+          <span class="rec-val silver" id="menu-last">—</span>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="menu-btns">
+        <button class="btn btn-play" id="btn-play" data-i18n="play">▶&nbsp;&nbsp;ИГРАТЬ</button>
+        <button class="btn btn-outline" id="btn-howto" data-i18n="howto">Как играть</button>
+        <button class="btn btn-danger" id="btn-reset" data-i18n="reset">Сбросить рекорд</button>
+      </div>
+
+      <!-- Creator -->
+      <div class="creator-info">creator: bilal • support: bilalabdraimov9@gmail.com</div>
+
+    </div>
+  </div>
+
+  <!-- ████ HOW TO PLAY ████ -->
+  <div class="screen" id="screen-howto">
+    <div class="modal-wrap">
+      <div class="modal-card">
+        <h2 class="modal-title" data-i18n="howto_title">Как играть</h2>
+        <div class="howto-list">
+          <div class="howto-row">
+            <span class="h-ico">👆</span>
+            <div>
+              <b data-i18n="h1_title">Тапни по экрану</b>
+              <p data-i18n="h1_body">Останови движущийся блок</p>
+            </div>
+          </div>
+          <div class="howto-row">
+            <span class="h-ico">✂️</span>
+            <div>
+              <b data-i18n="h2_title">Блок обрезается</b>
+              <p data-i18n="h2_body">Лишнее отваливается</p>
+            </div>
+          </div>
+          <div class="howto-row">
+            <span class="h-ico">⭐</span>
+            <div>
+              <b>PERFECT!</b>
+              <p data-i18n="h3_body">Точное попадание — размер не уменьшается</p>
+            </div>
+          </div>
+          <div class="howto-row">
+            <span class="h-ico">🔥</span>
+            <div>
+              <b>COMBO</b>
+              <p data-i18n="h4_body">С 2-го PERFECT подряд блок растёт обратно до исходного размера!</p>
+            </div>
+          </div>
+          <div class="howto-row">
+            <span class="h-ico">💀</span>
+            <div>
+              <b data-i18n="h5_title">Промах = конец</b>
+              <p data-i18n="h5_body">Полностью мимо стека — игра закончена</p>
+            </div>
+          </div>
+          <div class="howto-row">
+            <span class="h-ico">🏆</span>
+            <div>
+              <b data-i18n="h6_title">Рекорд сохраняется</b>
+              <p data-i18n="h6_body">Побей свои рекорды</p>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-play" id="btn-howto-back" data-i18n="back">← Назад</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ████ GAME ████ -->
+  <div class="screen" id="screen-game">
+    <canvas id="canvas"></canvas>
+
+    <div class="hud-top">
+      <div class="hud-score-wrap">
+        <span class="hud-lbl" id="hud-lbl-score">СЧЁТ</span>
+        <span class="hud-score" id="hud-score">0</span>
+      </div>
+      <div class="hud-right-wrap">
+        <span class="hud-lbl" id="hud-lbl-best">РЕКОРД</span>
+        <span class="hud-best" id="hud-best">0</span>
+        <button class="hud-pause" id="btn-pause">▶</button>
+      </div>
+    </div>
+
+    <div class="tap-hint" id="tap-hint" data-i18n="tap_hint">Тапни чтобы остановить блок</div>
+    <div class="feedback" id="feedback"></div>
+    <div class="milestone" id="milestone"></div>
+  </div>
+
+  <!-- ████ PAUSE ████ -->
+  <div class="screen overlay" id="screen-pause">
+    <div class="modal-card ov-card">
+      <h2 class="modal-title" data-i18n="pause_title">Пауза</h2>
+      <div class="ov-score-wrap">
+        <span class="rec-lbl" data-i18n="current_score">Текущий счёт</span>
+        <span class="rec-val gold" id="pause-score">0</span>
+      </div>
+      <div class="ov-btns">
+        <button class="btn btn-play"    id="btn-resume"    data-i18n="resume">▶ Продолжить</button>
+        <button class="btn btn-outline" id="btn-restart-p" data-i18n="restart">↺ Заново</button>
+        <button class="btn btn-danger"  id="btn-menu-p"    data-i18n="menu">← Меню</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ████ GAME OVER ████ -->
+  <div class="screen overlay" id="screen-gameover">
+    <div class="modal-card ov-card go-card">
+      <h2 class="go-title" data-i18n="go_title">Игра окончена</h2>
+      <div class="go-scores">
+        <div class="go-cell">
+          <span class="rec-lbl" data-i18n="your_score">Ваш счёт</span>
+          <span class="rec-val silver" id="go-score">0</span>
+        </div>
+        <div class="rec-divider vertical"></div>
+        <div class="go-cell">
+          <span class="rec-lbl" data-i18n="best"> Рекорд</span>
+          <span class="rec-val gold" id="go-best">0</span>
+        </div>
+      </div>
+      <div class="new-best" id="new-best" data-i18n="new_record"> Новый рекорд!</div>
+      <div class="ov-btns">
+        <button class="btn btn-play"   id="btn-restart-go" data-i18n="restart">▶ Заново</button>
+        <button class="btn btn-danger" id="btn-menu-go"    data-i18n="menu">← Меню</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
